@@ -56,7 +56,7 @@ podman info
 
 - Clone the project from the repository here...
 ```bash
-git clone https://github.com/Jonath-z/Decentralized-bot
+git clone https://github.com/lukrycyfa/product-survey-dapp.git
 ```
 
 - Cd into the dir and install it's dependencies
@@ -91,7 +91,7 @@ URLs:
 
 ### **Individual Deployments**
 
-- You can deploy individual the canisters independently:
+- You can deploy the canisters independently:
 
 - Deploy only the backend:
 
@@ -111,7 +111,3 @@ dfx deploy survey_frontend
 npm start
 ```
 
-
-### **Troubleshooting**
-
-If you encounter any issues, refer to this [documentation](https://demergent-labs.github.io/azle/deployment.html#common-deployment-issues) 
