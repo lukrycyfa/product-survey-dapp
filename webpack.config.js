@@ -81,6 +81,7 @@ module.exports = {
       ...Object.keys(process.env).filter((key) => {
         if (key.includes("CANISTER")) return true;
         if (key.includes("DFX")) return true;
+        if (key.includes("REACT")) return true; // add to docs
         return false;
       }),
     ]),

@@ -1,15 +1,16 @@
 // imported dependencies
 import React, { useState } from "react";
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 
 
-// The create event construct taking a save function as prop
+// The UpdateProduct construct taking a product instance and an updateproduct function as prop
 
 export default function UpdateProduct({ product, updateproduct }) {
 
-  const { id, name, imageUrl, description } = product;  
-  // An event attributes state variable's
+  const { id, name, imageUrl, description } = product; 
+
+  // A products attributes state variable's
   const [_name, setName] = useState(name);
   const [_imageUrl, setImageUrl] = useState(imageUrl);
   const [_description, setDescription] = useState(description);
@@ -17,9 +18,9 @@ export default function UpdateProduct({ product, updateproduct }) {
   // form input vlidation
   const isFormFilled = () => _name && _imageUrl && _description ;
 
-  // Add event modal state 
+  // UpdateProduct modal state 
   const [show, setShow] = useState(false);
-  // Add event modal state togglers
+  // UpdateProduct modal state togglers
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -33,7 +34,7 @@ export default function UpdateProduct({ product, updateproduct }) {
       </Button>
       <Modal show={show} onHide={handleClose} centered className="text-center rounded-2 border-info shadow-lg">
         <Modal.Header closeButton>
-          <Modal.Title>New Event</Modal.Title>
+          <Modal.Title>Update Product</Modal.Title>
         </Modal.Header>
         <Form>
           <Modal.Body className="rounded-2 bg-dark border-info shadow-lg">
@@ -91,9 +92,9 @@ export default function UpdateProduct({ product, updateproduct }) {
             disabled={!isFormFilled()}
             onClick={() => {
               updateproduct(id, {
-                _name,
-                _imageUrl,
-                _description
+                name:_name,
+                imageUrl:_imageUrl,
+                description:_description
               });
               handleClose();
             }}
@@ -107,8 +108,7 @@ export default function UpdateProduct({ product, updateproduct }) {
 };
 
 UpdateProduct.propTypes = {
-    product: PropTypes.instanceOf(object).isRequired,
-    updateProduct: PropTypes.func.isRequired,
+    product: PropTypes.instanceOf(Object).isRequired,
+    updateproduct: PropTypes.func.isRequired,
 };
 
-// export default AddEvent;

@@ -1,335 +1,294 @@
-// import { localStorageController } from "./localStorageController";
-import coverImg from "../assets/img/sandwich.jpg";
 
-const baseUrl = "http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943";
+// const baseUrl = "http://bkyz2-fmaaa-aaaaa-qaaaq-cai.localhost:4943";
+const baseUrl = "http://bd3sg-teaaa-aaaaa-qaaba-cai.localhost:4943";
 
+// canister endpoints
 const endpoints = {
-  getSurveys: "get/surveys",
-  getUsersSurveys: "get/usersurveydata",
-  getClassifierExamples: (owner) => `get/classifierexamples/${owner}`,
-  createAccount: "createaccount",
-  addProduct: "add/product",
-  updateProduct: (productId) => `update/product/${productId}`,
-  addClassifier: "add/classifierexample",
-  addSurveyQuestion: (productId) => `add/surveyquestion/${productId}`,
-  takeSurvey: (owner, productId) => `takesurvey/${owner}/${productId}`, 
-  deleteProduct: (productId) => `delete/product/${productId}`,  
-  deleteSurveyQuestion: (productId, questionId) => `delete/surveyquestion/${productId}/${questionId}`,
-  deleteClassifierExample: (classIdx) => `delete/classifierexample/${classIdx}`, 
-  deleteAccount:  "delete/account",
-};
+  getSurveys: "/get/surveys",
+  getUsersSurveys: "/get/usersurveydata",
+  getClassifierExamples: (owner) => `/get/classifierexamples/${owner}`,
+  createAccount: "/createaccount",
+  addProduct: `/add/product`,
+  updateProduct: `/update/product`,
+  addClassifier: `/add/classifierexample` ,
+  addSurveyQuestion: `/add/surveyquestion`,
+  takeSurvey: `/takesurvey`, 
+  deleteProduct: (productId) => `/delete/product/${productId}`,  
+  deleteSurveyQuestion: (productId, questionId) => `/delete/surveyquestion/${productId}/${questionId}`,
+  deleteClassifierExample: (classIdx) => `/delete/classifierexample/${classIdx}`, 
+  deleteAccount:  "/delete/account",
+
+    };
 
 
-
-var _testprodduct = {
-  "id": "string",
-  "owner": "Principal",  
-  "name": "string",
-  "imageUrl": coverImg,
-  "description": "string",
-  "survey": {"id": "string",
-    "questions": [{ "id": "string", "question": "string", "possibleoptions": ["possibleoptions", "possibleoptions"]}, 
-                  { "id": "string", "question": "string", "possibleoptions": ["possibleoptions", "possibleoptions"]},
-                  { "id": "string", "question": "string", "possibleoptions": ["possibleoptions", "possibleoptions"]},
-                  { "id": "string", "question": "string", "possibleoptions": ["possibleoptions", "possibleoptions"]}],
-    "feedbacks": [
-      {"visitor": "Principal",
-      "feedbacks": [{"question": "string", "feedback": "string", "evaluation": "string", "confidence": "float32"},
-                    {"question": "string", "feedback": "string", "evaluation": "string", "confidence": "float32"}]},        
-      {"visitor": "Principal",
-      "feedbacks": [{"question": "string", "feedback": "string", "evaluation": "string", "confidence": "float32"},
-                    {"question": "string", "feedback": "string", "evaluation": "string", "confidence": "float32"}]}]
-  }
-}
-
-var _allproduct = [_testprodduct, _testprodduct] 
-
-var _user =  { products: _allproduct, classifierExamples: [{label: "string", text: "string"}, 
-                                                          {label: "string", text: "string"}]}
-
-
-
-
+// get all surveys from the canister
 export async function getSurveys() {
-
-
   try {
-    // const response = await fetch(
-    //   `${baseUrl}/${endpoints.getSurveys}`,
-    //   {
-    //     headers: [["Content-Type", "application/json"]],
-    //   }
-    // );
-
-    // if (!response.ok) {
-    //   throw await response.json();
-    // }
-
-    // return await response.json();
-    return _allproduct;
+    // calling the canister
+    const response = await window.canister.survey.http_request({"url":`${endpoints.getSurveys}`, "method": "GET",
+      "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+      const _data = new TextDecoder()
+      const _decode = _data.decode(response.body) 
+      const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+      if (!status) {
+        return {"message": `error code ${response.status_code} while retriving data`}
+      }
+      const data = JSON.parse(_decode)
+      return data;
   } catch (error) {
     console.log(error);
   }
 }
 
-
+// get all surveys asscociated with the connected account
 export async function getUsersSurveys() {
   try {
-    // const response = await fetch(
-    //   `${baseUrl}/${endpoints.getUsersSurveys}`,
-    //   {
-    //     headers: [["Content-Type", "application/json"]],
-    //   }
-    // );
-
-    // if (!response.ok) {
-    //   throw await response.json();
-    // }
-
-    // return await response.json();
-    return _user
+    // calling the canister
+    const response = await window.canister.survey.http_request({"url":`${endpoints.getUsersSurveys}`, "method": "GET",
+      "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+      const _data = new TextDecoder()
+      const _decode = _data.decode(response.body) 
+      const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+      if (!status) {
+        return {"message": `error code ${response.status_code} while retriving data`}
+      }
+      const data = JSON.parse(_decode)
+      return data;
   } catch (error) {
     console.log(error);
   }
 }
 
-
+// get all classifiers examples associated with owner parameter
 export async function getClassifierExamples(owner) {
   try {
-    const response = await fetch(
-      `${baseUrl}/${endpoints.getClassifierExamples(owner)}`,
-      {
-        headers: [["Content-Type", "application/json"]],
+     // calling the canister
+    const response = await window.canister.survey.http_request_update({"url":`${endpoints.getClassifierExamples(owner)}`, "method": "GET",
+      "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+      const _data = new TextDecoder()
+      const _decode = _data.decode(response.body) 
+      const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+      if (!status) {
+          return {"message": `error code ${response.status_code} getting classifiers`}
       }
-    );
-
-    if (!response.ok) {
-      throw await response.json();
-    }
-
-    return await response.json();
+      const data = JSON.parse(_decode)
+      return data;
   } catch (error) {
     console.log(error);
   }
 }
 
- // here
+ // create a new user account
 export async function createAccount() {
   try {
-    const response = await fetch(`${baseUrl}/${endpoints.createAccount}`, {
-      method: "PUT",
-      headers: [["Content-Type", "application/json"]],
-      // body: JSON.stringify({ userIdentity }),
-    });
-
-    if (!response.ok) {
-      throw await response.json();
+     // calling the canister
+    const response = await window.canister.survey.http_request_update({"url":`${endpoints.createAccount}`, "method": "POST",
+    "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+    const _data = new TextDecoder()
+    const _decode = _data.decode(response.body) 
+    const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+    if (!status) {
+        return {"message": `error code ${response.status_code} while creating account`}
     }
-
-    return await response.json();
+    const data = JSON.parse(_decode)
+    return data;
   } catch (error) {
     console.log(error);
   }
 }
 
+// create a new product associated to the connected account
 export async function addProduct(productPayload) {
   try {
-    // const userIdentity = window.auth.principalText;
-    // const conversationId = localStorageController("conversation")?.id;
-
+     // calling the canister
+    const pubKey = Buffer.from(window.auth.pubKey);
     const response = await fetch(
-      `${baseUrl}/${endpoints.addProduct}`,
+      `${baseUrl}${endpoints.addProduct}`,
       {
         method: "POST",
         headers: [["Content-Type", "application/json"]],
-        body: JSON.stringify({ productPayload }),
+        body: JSON.stringify({ key : pubKey , payload : productPayload }),
       }
     );
-
     if (!response.ok) {
-      throw await response.json();
+      var err = await response.json();
+      return {"message": `${err} `}
     }
-
-    return await response.json();
+    const data = await response.json()
+    return data;
   } catch (error) {
     console.log(error);
   }
 }
 
+// update a product associated to the connected account
 export async function updateProduct(productId, productPayload) {
   try {
-    const response = fetch(
-      `${baseUrl}/${endpoints.updateProduct(productId)}`,
+     // calling the canister
+    const pubKey = Buffer.from(window.auth.pubKey);
+    const response = await fetch(
+      `${baseUrl}${endpoints.updateProduct}`,
       {
-        method: "PATCH",
+        method: "POST",
         headers: [["Content-Type", "application/json"]],
-        body: JSON.stringify({ productPayload }),
+        body: JSON.stringify({ key : pubKey, payload : productPayload, productId :productId }),
       }
     );
-
     if (!response.ok) {
-      throw await response.json();
+      var err = await response.json();
+      return {"message": `${err} `}
     }
-
-    return await response.json();
+    const data = await response.json()
+    return data;
   } catch (error) {
     console.log(error);
   }
 }
 
+// add a classifier example associated to the connected account
 export async function addClassifier(classifierPayload) {
   try {
-    // const userIdentity = window.auth.principalText;
-    // const conversationId = localStorageController("conversation")?.id;
-
+     // calling the canister
+    const pubKey = Buffer.from(window.auth.pubKey);
     const response = await fetch(
-      `${baseUrl}/${endpoints.addClassifier}`,
+      `${baseUrl}${endpoints.addClassifier}`,
       {
         method: "POST",
         headers: [["Content-Type", "application/json"]],
-        body: JSON.stringify({ classifierPayload }),
+        body: JSON.stringify({ key : pubKey, payload : classifierPayload }),
       }
     );
-
     if (!response.ok) {
-      throw await response.json();
+      var err = await response.json();
+      return {"message": `${err} `}
     }
-
-    return await response.json();
+    const data = await response.json()
+    return data;
   } catch (error) {
     console.log(error);
   }
 }
 
-
-
+// add a survey question to a product associated to the connected account
 export async function addSurveyQuestion(productId, questionPayload) {
   try {
-    // const userIdentity = window.auth.principalText;
-    // const conversationId = localStorageController("conversation")?.id;
-
+     // calling the canister
+    const pubKey = Buffer.from(window.auth.pubKey);
     const response = await fetch(
-      `${baseUrl}/${endpoints.addSurveyQuestion(productId)}`,
+      `${baseUrl}${endpoints.addSurveyQuestion}`,
       {
         method: "POST",
         headers: [["Content-Type", "application/json"]],
-        body: JSON.stringify({ questionPayload }),
+        body: JSON.stringify({ key : pubKey, payload : questionPayload, productId : productId }),
       }
     );
-
     if (!response.ok) {
-      throw await response.json();
+      var err = await response.json();
+      return {"message": `${err} `}
     }
-
-    return await response.json();
+    const data = await response.json()
+    return data;
   } catch (error) {
     console.log(error);
   }
 }
 
-
+// take a survey
 export async function takeSurvey(owner, productId, feedbackPayload) {
   try {
-    // const userIdentity = window.auth.principalText;
-    // const conversationId = localStorageController("conversation")?.id;
-
+     // calling the canister
+    const pubKey = Buffer.from(window.auth.pubKey);
     const response = await fetch(
-      `${baseUrl}/${endpoints.takeSurvey(owner, productId)}`,
+      `${baseUrl}${endpoints.takeSurvey}`,
       {
         method: "POST",
         headers: [["Content-Type", "application/json"]],
-        body: JSON.stringify({ feedbackPayload }),
+        body: JSON.stringify({ key : pubKey, payload : { feedbacks: feedbackPayload }, 
+                              productId : productId, owner : owner }),
       }
     );
-
     if (!response.ok) {
-      throw await response.json();
+      var err = await response.json();
+      return {"message": `${err} `}
     }
-
-    return await response.json();
+    const data = await response.json()
+    return data;
   } catch (error) {
     console.log(error);
   }
 }
 
-
+// delete a product associated with the connected account
 export async function deleteProduct(productId) {
   try {
-    const response = fetch(
-      `${baseUrl}/${endpoints.deleteProduct(productId)}`,
-      {
-        method: "DELETE",
-        headers: [["Content-Type", "application/json"]],
-      }
-    );
-
-    if (!response.ok) {
-      throw await response.json();
+     // calling the canister
+  const response = await window.canister.survey.http_request_update({"url":`${endpoints.deleteProduct(productId)}`, "method": "DELETE",
+    "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+    const _data = new TextDecoder()
+    const _decode = _data.decode(response.body) 
+    const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+    if (!status) {
+        return {"message": `error code ${response.status_code} while deleting product`}
     }
-
-    return await response.json();
+    const _body = JSON.parse(_decode)
+    return _body;
   } catch (error) {
     console.log(error);
   }
 }
 
-
+// delete a survey question to a product associated to the connected account
 export async function deleteSurveyQuestion(productId, questionId) {
   try {
-    const response = fetch(
-      `${baseUrl}/${endpoints.deleteSurveyQuestion(productId, questionId)}`,
-      {
-        method: "DELETE",
-        headers: [["Content-Type", "application/json"]],
-      }
-    );
-
-    if (!response.ok) {
-      throw await response.json();
+   // calling the canister  
+  const response = await window.canister.survey.http_request_update({"url":`${endpoints.deleteSurveyQuestion(productId, questionId)}`, "method": "DELETE",
+    "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+    const _data = new TextDecoder()
+    const _decode = _data.decode(response.body) 
+    const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+    if (!status) {
+        return {"message": `error code ${response.status_code} while deleting survey question`}
     }
-
-    return await response.json();
+    const _body = JSON.parse(_decode)
+    return _body;
   } catch (error) {
     console.log(error);
   }
 }
 
+// delete a classifier example associated with the connected account
 export async function deleteClassifierExample(classIdx) {
   try {
-    const response = fetch(
-      `${baseUrl}/${endpoints.deleteClassifierExample(classIdx)}`,
-      {
-        method: "DELETE",
-        headers: [["Content-Type", "application/json"]],
-      }
-    );
-
-    if (!response.ok) {
-      throw await response.json();
+   // calling the canister  
+  const response = await window.canister.survey.http_request_update({"url":`${endpoints.deleteClassifierExample(classIdx)}`, "method": "DELETE",
+    "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+    const _data = new TextDecoder()
+    const _decode = _data.decode(response.body) 
+    const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+    if (!status) {
+        return {"message": `error code ${response.status_code} while deleting classifier`}
     }
-
-    return await response.json();
+    const _body = JSON.parse(_decode)
+    return _body;
   } catch (error) {
     console.log(error);
   }
 }
 
-
+// delete a users account 
 export async function deleteAccount() {
   try {
-    const response = fetch(
-      `${baseUrl}/${endpoints.deleteAccount}`,
-      {
-        method: "DELETE",
-        headers: [["Content-Type", "application/json"]],
-      }
-    );
-
-    if (!response.ok) {
-      throw await response.json();
+   // calling the canister  
+  const response = await window.canister.survey.http_request_update({"url":`${endpoints.deleteAccount}`, "method": "DELETE",
+    "body":[], "headers":[["Content-Type", "application/json"]], "certificate_version":[]})
+    const _data = new TextDecoder()
+    const _decode = _data.decode(response.body) 
+    const status =  response.status_code == 200 || response.status_code == 400 ? true: false  
+    if (!status) {
+        return {"message": `error code ${response.status_code}  while deleting account`}
     }
-
-    return await response.json();
+    const _body = JSON.parse(_decode)
+    return _body;
   } catch (error) {
     console.log(error);
   }

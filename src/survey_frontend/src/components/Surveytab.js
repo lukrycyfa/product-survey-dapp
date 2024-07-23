@@ -3,18 +3,20 @@ import React, { useState} from "react";
 import PropTypes from "prop-types";
 import { Card, Col, Badge, Stack, Form, FloatingLabel } from "react-bootstrap";
 
+// The SurveyTab construct taking _question instance, setcurrentresponse, setcurrentquestion and getevaluation functions  as --props
+export default function SurveyTab({ _question, setcurrentresponse, setcurrentquestion, getevaluation })  {  
 
-export default function SurveyTab({ _question, setcurrentresponse, setcurrentquestion })  {  
-
-
+  // the question instance
   const { id, question, possibleoptions } = _question;
+
+  // the possible options state variable's
   const [_possibleoptions, setPossibleOptions] = useState(possibleoptions)
 
-  const isFormFilled = () => _response;
 
   return (
     <Col key={id}>
-      <Card className="rounded-2 border-info shadow-lg h-100" style={{ backgroundColor: "#021278" }}>
+      <Card className="rounded-2 border-info shadow-lg h-100 bg-dark" 
+      >
         <Card.Header>
           <Stack direction="horizontal" gap={2}>
             <Badge bg="secondary" className="ms-auto">
@@ -29,15 +31,16 @@ export default function SurveyTab({ _question, setcurrentresponse, setcurrentque
               <FloatingLabel
               key={idx}
               label={ans}
-              className="mb-3"
+              className="mb-3 border-warning border-3"
               >
               <Form.Control
+                  className="border-warning border-3"
                   type="checkbox"
                   value={ans}
                   onChange={(e) => {
                     setcurrentresponse(e.target.value);
                     setcurrentquestion(question);
-                    // console.log(e.target.value);
+                    getevaluation(question, e.target.value)
                   }}
                   placeholder={ans}
               />
@@ -53,6 +56,7 @@ export default function SurveyTab({ _question, setcurrentresponse, setcurrentque
 SurveyTab.propTypes = {
   _question: PropTypes.instanceOf(Object).isRequired,
   setcurrentresponse: PropTypes.func.isRequired, 
-  setcurrentquestion: PropTypes.func.isRequired
+  setcurrentquestion: PropTypes.func.isRequired,
+  getevaluation: PropTypes.func.isRequired
 };
 

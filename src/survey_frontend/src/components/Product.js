@@ -1,57 +1,64 @@
+// imported dependencies
 import React, { useState, useEffect } from "react";
 import useApi from "../hooks/useApi";
 import toast from "react-hot-toast";
-import Loading from "./Loading";
+import Loader from "./utils/Loader";
 import SurveyTab from "./Surveytab";
-
-
-
 import PropTypes from "prop-types";
-// import { Card, Button, Col, Badge, Stack, Modal, Row } from "react-bootstrap";
+import { Principal } from "@dfinity/principal";
 import { Button, Modal, Stack, Carousel, Container, Col, Row, Card, Badge } from "react-bootstrap";
-
-// import { Principal } from "@dfinity/principal";
-
-
 import { takeSurvey } from "../utils/survey";
 
-// The Event construct taking an event instance and a buyticket function as --props
+// The Product construct taking a product instance and a _loading variable as --props
 export default function Product({ product, _loading }) {
-
-
-  // an event instance
+  // the product instance
   const { id, owner, name, imageUrl, description, survey } = product;
 
-  // an event ticketclasses state variable
+  // the surveyQuestion, _currentResponse and _currentQuestion state variable
   const [surveyQuestion, setSurveyQuestion] = useState([]);
-  const [_currentResponse, setCurrentResponse] = useState("")
-  const [_currentQuestion, setCurrentQuestion] = useState("")
-  
-  const {getEvaluation, setUserFeedBack, setLoading, userFeedBack, loading, error} = useApi()
+  const [_currentResponse, setCurrentResponse] = useState("");
+  const [_currentQuestion, setCurrentQuestion] = useState("");
+  const _owner = Principal.from(JSON.stringify(owner)).toString();
 
+  // an instance of the useApi hook
+  const { loading, setLoading, getEvaluation, userFeedBack } = useApi(_owner);
 
-  // event tickets modal state 
+  // Product and Default Question modal state 
   const [show, setShow] = useState(false);
-  // event tickets modal state toggler
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [_show, _setShow] = useState(false);
+
+  // Product and Default Question modal state toggler's
+  const handleClose = () => {
+    if (loading) return;
+    setShow(false)
+  };
+
+  const handleShow = () => {
+    setShow(true)
+    userFeedBack.splice(0, userFeedBack.length)
+    setCurrentResponse("")
+  };
+
+  const _handleShow = () => _setShow(true);
+  const _handleClose = () => _setShow(false);
 
 
+  // submit a survey to the canister
   const submitSurvey = async () => {
     try {
       setLoading(true);
-      const _take = await takeSurvey(owner, id, userFeedBack);
-      console.log(_take)
-      // const _tickets = await getAttendeeTickets();
-      // if (_tickets.Err) return;
-      // setTickets(_tickets.Ok.tickets);
-
+      const _take = await takeSurvey(_owner, id, userFeedBack);
+      toast(`${_take.message}`, { duration: 7000 })
+      userFeedBack.splice(0, userFeedBack.length)
+      handleClose()
     } catch (error) {
-      console.log({ error });
+      console.log(error);
+      toast.error(JSON.stringify(error), { duration: 8000 })
     } finally {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     try {
@@ -66,10 +73,8 @@ export default function Product({ product, _loading }) {
       <Card className="rounded-2 border-info shadow-lg  h-100" style={{ backgroundColor: "#021278" }}>
         <Card.Header>
           <Stack direction="horizontal" gap={2}>
-            {/* <span className="font-monospace text-white">{Principal.from(manager).toText().slice(0, 17)}...</span> */}
-            <span className="font-monospace text-white">{owner.slice(0, 17)}...</span>
+            <span className="font-monospace text-white">{_owner.slice(0, 15)}...</span>
             <Badge bg="secondary" className="ms-auto">
-              {/* {soldOut.toString()} SoldOut Tickets */}
             </Badge>
           </Stack>
         </Card.Header>
@@ -82,80 +87,99 @@ export default function Product({ product, _loading }) {
           <Card.Text className="flex-grow-2">
             <Button
               disabled={_loading || loading}
-              onClick={ () => {handleShow()
-                setUserFeedBack([])
-              }}
+              onClick={() => _handleShow()}
               variant="dark"
               className="btn btn-primary btn-md rounded-3 border border-info shadow-lg display-4 fw-bold text-body-emphasis"
             >
               Take Survey
             </Button>
             <Modal show={show} onHide={handleClose} size="lg" centered scrollable={true} backdrop={true} >
-            <Modal.Header closeButton={!loading}>
-              <Stack direction="horizontal" gap={3}>
-                <Modal.Title>Survey In Progress </Modal.Title>
-              </Stack>
-            </Modal.Header>
-            <Modal.Body className="rounded-2 border-info bg-dark shadow-lg" >
-              {!loading ? (
-                <>
-                  <Container>
-                    <Carousel slide variant="dark" pause indicators={false} interval={null}
-                      controls={!!_currentResponse}
-                      wrap={false}
-                      
-                      prevIcon={<Button onClick={()=>{ setCurrentResponse("")}} variant="primary"><i className="bi bi-arrow-left me-2 fs-2" /></Button>}
-                      nextIcon={ !_currentResponse ?  null : <Button 
-                        onClick={()=> { 
-                          // getEvaluation(_currentQuestion, _currentResponse)
-                        setCurrentResponse("")  
-                      }} variant="primary"><i className="bi bi-arrow-right me-2 fs-2" /></Button>}
-                    >
-                    { surveyQuestion.map((que, idx) => (
+              {!loading ? (<Modal.Header closeButton={!loading}>
+                <Modal.Title>Survey In Progress</Modal.Title>
+              </Modal.Header>) : (<Loader />)}
+              <Modal.Body className="rounded-2 border-info bg-dark shadow-lg" >
+                <Container>
+                  <Carousel slide variant="dark" pause indicators={false} interval={null}
+                    controls={!loading}
+                    wrap={false}
+
+                    prevIcon={<Button onClick={() => { setCurrentResponse("") }} variant="primary"><i className="bi bi-arrow-left me-2 fs-2" /></Button>}
+                    nextIcon={loading || !_currentResponse ? null : <Button
+                      onClick={() => {
+                        setCurrentResponse("")
+                      }} variant="primary"><i className="bi bi-arrow-right me-2 fs-2" /></Button>} >
+                    {surveyQuestion.map((que, idx) => (
                       <Carousel.Item key={idx}>
                         <Row >
-                        <Col xs={6} md={2} bg="info">
-                        </Col>
-                        <Col xs={12} md={8}>
-                        <SurveyTab
-                        _question={que}
-                        setcurrentresponse={setCurrentResponse}
-                        setcurrentquestion={setCurrentQuestion}
-                      />
-                        </Col>
-                        <Col xs={6} md={2}>
-                        </Col>
-                      </Row>
+                          <Col xs={6} md={2} bg="info">
+                          </Col>
+                          <Col xs={12} md={8}>
+                            <SurveyTab
+                              _question={que}
+                              setcurrentresponse={setCurrentResponse}
+                              setcurrentquestion={setCurrentQuestion}
+                              getevaluation={getEvaluation}
+                            />
+                          </Col>
+                          <Col xs={6} md={2}>
+                          </Col>
+                        </Row>
 
                       </Carousel.Item>
                     ))}
-                    </Carousel>
+                  </Carousel>
 
-                  </Container>
-                </>
-              ) : (
-                <Loading />
-              )}
-            </Modal.Body>
-            <Modal.Footer>
-            <Button variant="outline-secondary"
-              disabled={loading} 
-                  onClick={ () => {
+                </Container>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="outline-secondary"
+                  disabled={loading}
+                  onClick={() => {
                     handleClose()
-                    setUserFeedBack([])
                   }}>
                   Close
-            </Button>
-            <Button variant="outline-secondary" 
-                disabled={userFeedBack.length != surveyQuestion.length || loading} 
-                onClick={ () => {
-                  submitSurvey()
-                }}>
-                Submit Survey
-            </Button>
+                </Button>
+                <Button variant="outline-secondary"
+                  disabled={surveyQuestion.length > 1 ? userFeedBack.length != surveyQuestion.length :
+                    _currentResponse.length <= 0 || loading}
+                  onClick={async () => {
+                    surveyQuestion.length == 1 ? await getEvaluation(_currentQuestion, _currentResponse) : null;
+                    submitSurvey();
+                  }}>
+                  Submit Survey
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Card.Text>
+          <Modal show={_show} onHide={_handleClose} size="md" centered scrollable={true} backdrop={true} >
+            {!loading ? (<Modal.Header closeButton={!loading}>
+              <Modal.Title>Have You Used This Product Before ?</Modal.Title>
+            </Modal.Header>) : (<Loader />)}
+            <Modal.Body className="rounded-2 border-info bg-dark shadow-lg" >
+              <Card.Title className="text-white text-center">
+                <Button variant="outline-secondary"
+                  disabled={loading}
+                  onClick={() => {
+                    handleShow()
+                    _handleClose()
+                  }}>
+                  YES
+                </Button>
+                <span>
+                  {'---'}
+                </span>
+                <Button variant="outline-secondary"
+                  disabled={loading}
+                  onClick={() => _handleClose()}>
+                  NO
+                </Button>
+              </Card.Title>
+
+            </Modal.Body>
+            <Modal.Footer>
+
             </Modal.Footer>
           </Modal>
-          </Card.Text>
         </Card.Body>
       </Card>
     </Col>

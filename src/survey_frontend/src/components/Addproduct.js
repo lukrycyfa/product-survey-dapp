@@ -3,21 +3,20 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Modal, Form, FloatingLabel } from "react-bootstrap";
 
-// The create event construct taking a save function as prop
-
+// The AddProduct construct taking the addproduct function as prop
 export default function AddProduct({ addproduct }) {
 
-  // An event attributes state variable's
+  // A Product attributes state variable's
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
 
   // form input vlidation
-  const isFormFilled = () => name && imageUrl && description ;
+  const isFormFilled = () => name && imageUrl && description;
 
-  // Add event modal state 
+  // AddProduct modal state 
   const [show, setShow] = useState(false);
-  // Add event modal state togglers
+  // AddProduct modal state togglers
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -31,7 +30,7 @@ export default function AddProduct({ addproduct }) {
       </Button>
       <Modal show={show} onHide={handleClose} centered className="text-center rounded-2 border-info shadow-lg">
         <Modal.Header closeButton>
-          <Modal.Title>New Event</Modal.Title>
+          <Modal.Title>Create Product</Modal.Title>
         </Modal.Header>
         <Form>
           <Modal.Body className="rounded-2 bg-dark border-info shadow-lg">
@@ -105,4 +104,3 @@ AddProduct.propTypes = {
   addproduct: PropTypes.func.isRequired,
 };
 
-// export default AddEvent;

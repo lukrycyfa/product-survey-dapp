@@ -1,7 +1,7 @@
 {
   "name": "survey_frontend",
   "version": "0.2.0",
-  "description": "Internet Computer starter application",
+  "description": "Product Survey Proto Application",
   "keywords": [
     "Internet Computer",
     "Motoko",
@@ -29,22 +29,16 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "azle": "^0.19.0",
+    "azle": "^0.20.2",
     "big-number": "^2.0.0",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.7.1",
     "cohere-ai": "^7.10.6",
-    "cookie-signature": "^1.2.1",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
-    "destroy": "^1.2.0",
     "express": "^4.18.3",
-    "fs": "^0.0.1-security",
     "hashcode": "^1.0.3",
-    "path": "^0.12.7",
     "prop-types": "^15.7.2",
-    "querystring": "^0.2.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.3",
     "react-confirm-alert": "^2.7.0",
@@ -53,8 +47,7 @@
     "react-toastify": "^8.1.0",
     "secp256k1": "^5.0.0",
     "uuid": "^9.0.0",
-    "web-vitals": "^1.0.1",
-    "zlib": "^1.0.5"
+    "web-vitals": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",
