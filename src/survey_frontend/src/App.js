@@ -9,8 +9,9 @@ import coverImg from "./assets/img/sandwich.jpg"
 import { login, logout as destroy } from "./utils/auth";
 import { Toaster } from "react-hot-toast";
 
+// The app componet
 const App = function AppWrapper() {
-
+  // get auth state and user's principle
   const isAuthenticated = window.auth.isAuthenticated;
   const principal = window.auth.principalText;
 

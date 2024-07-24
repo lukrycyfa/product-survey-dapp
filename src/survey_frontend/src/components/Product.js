@@ -190,5 +190,3 @@ Product.propTypes = {
   product: PropTypes.instanceOf(Object).isRequired,
   _loading: PropTypes.bool.isRequired
 };
-
-// export default Event;

@@ -162,7 +162,7 @@ export default function AddQuestion({ id, addquestion }) {
               <Button
                 className="btn  btn-sm rounded-3 border border-info shadow-lg display-4 fw-bold text-body-emphasis"
                 onClick={() => {
-                  removeOptionInput(`${count - 1}`)
+                  removeOptionInput(`${count}`)
                   setCount(count - 1)
                 }}
                 disabled={count <= 0}

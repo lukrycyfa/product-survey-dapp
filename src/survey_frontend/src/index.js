@@ -6,6 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { initializeContract } from "./utils/init";
 
+// initialize survey contract
 window.renderICPromise = initializeContract()
   .then(() => {
     ReactDOM.render(

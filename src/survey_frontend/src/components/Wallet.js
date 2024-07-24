@@ -19,7 +19,7 @@ const Wallet = ({ principal, balance, symbol, isAuthenticated, destroy }) => {
             <Dropdown.Item>
               <Stack direction="horizontal" gap={2}>
                 <i className="bi bi-person-circle fs-4" />
-                <span className="font-monospace">{principal}</span>
+                <span className="font-monospace">{`${principal.slice(0, 10)}...${principal.slice(principal.length-10, principal.length)}`}</span>
               </Stack>
             </Dropdown.Item>
 

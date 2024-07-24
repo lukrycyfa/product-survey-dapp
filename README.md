@@ -1,5 +1,5 @@
 # **PRODUCT-SURVEYS**
-- With the intergration of Cohere's Classification endpoint and the `embed-english-v3.0` model, an Internet Computer Replica (ICP), it's components and other libraries and utilities, This A.I Powered project feature's a market place enviroment that could be applied to an actual online store, dapp or as a standalone application. having intentions of bringing in users to create products and other users take surveys on products the have consumed or made use of. Giving product owners the privledge to get gathere data and also gain some insight on products success in a market, and to improve on quality. And in another hand let user's express thier opinions on products from seleted options.
+- With the integration of Cohere's Classification endpoint and Cohere's `embed-english-v3.0` model, an Internet Computer Replica (ICP), it's components and other libraries and utilities, This A.I Powered project feature's a market place environment that could be applied to an actual online store, D-app or as a standalone application. Having features for users to create products aliases for survey and have other users come take surveys on these products they have consumed or made use of, through some campaigns or other means. Giving product owners the privilege to gather data, gain some insight on a products success in a market, and to improve on quality. On the other hand let user's express their opinions on products from selected options on Survey Questions.
 
 ## **Disclaimer: Use of Unaudited Code for Educational Purposes Only**
 This code is provided strictly for educational purposes and has not undergone any formal security audit. 
@@ -21,8 +21,8 @@ Before using this code, it is recommended to consult with a qualified profession
 ### **Required Tech Stack**
 
 - To deploy and test this Project you would be needing these tech stacks...
-    - Internet Computer Protocol (ICP): The core platform for deploying the chatbot, providing a decentralized infrastructure.
-    - JavaScript/TypeScript: Used for the development of the chatbot, leveraging modern web development practices.
+    - Internet Computer Protocol (ICP): The core platform for deploying the Survey App, providing a decentralized infrastructure.
+    - JavaScript/TypeScript: Used for the development of the Survey App, leveraging modern web development practices.
     - Node.js: The runtime environment for executing the JavaScript code outside of a browser.
     - Express: Node.js web application framework that provides a robust set of features for web and mobile applications, APIs.
     - DFINITY Canister SDK: A toolkit for building and deploying applications on the Internet Computer.
@@ -33,9 +33,13 @@ Before using this code, it is recommended to consult with a qualified profession
 
 - This project was developed on a windows WSL2 Ubuntu 20.04 instance and would also do well on a Ubuntu 20.04 and later O.S.
 
+- If you don't already have an account, Sign-up with Cohere [@here](https://cohere.com)
+    - On your dashboard's `API key` section create an new or copy out existing Trial key, you will be needing it to populate  
+    - the `REACT_APP_COHERE_AI_API_KEY` variable in the `.env` file of the project you will be cloning later.
+
 - Follow the instruction on downloading and installing [DFX here](https://internetcomputer.org/docs/current/developer-docs/setup/install#installing-the-ic-sdk-1) 
 
-- verify the DFX installation by issuing this command
+- verify DFX installation by issuing this command
 ```bash
 dfx --version
 ```
@@ -75,9 +79,9 @@ dfx deploy
 ```
 
 - **Note**
-    - After the deployment do cross check the canister's i.d's in the URL's against the identity canisterId on the Url in `utils/auth.js`, the baseUrl canisterId in `utils/survey.js` and the caniterId in `utils/caniterFactory.js`. If there are any diffrences, do update them to reflect recent changes and deploy again. 
+    - After the deployment do cross check the canister's i.d's in the URL's against the  IDENTITY_PROVIDER canisterId on the Url in `utils/auth.js`, the baseUrl canisterId in `utils/survey.js` and the caniterId in `utils/caniterFactory.js`. If there are any differences, do update them to reflect recent changes and deploy again. 
 
-- These url's would be provided to access the canisters after deployment
+- These url's would be provided to access the canisters after deployment.
 ```bash
 URLs:
   Frontend canister via browser
@@ -93,13 +97,13 @@ URLs:
 
 - You can deploy the canisters independently:
 
-- Deploy only the backend:
+- Deploy the backend:
 
 ```bash
 dfx deploy survey_backend
 ```
 
-- Deploy only the frontend:
+- Deploy the frontend:
 
 ```bash
 dfx deploy survey_frontend
@@ -110,4 +114,5 @@ dfx deploy survey_frontend
 ```bash
 npm start
 ```
-
+### **Testing The D-APP**
+- After the project is deployed, follow the link to the front-end canister provided on the terminal. Create an account, you will then have access to the utility on the Managed Product interface, create new products, add survey questions to the products, you can then switch accounts to take surveys on the products. 

@@ -27,7 +27,9 @@ export default function UserSurveys({ getsurveys }) {
   const handleClose = () => { setShow(false); getsurveys(); }
   const handleShow = () => setShow(true);
 
-  const _handleClose = () => _setShow(false);
+  const _handleClose = () => {
+    if(loading) return;
+    _setShow(false)};
   const _handleShow = () => _setShow(true);
 
   // get all users surveys

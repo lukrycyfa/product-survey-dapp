@@ -55,7 +55,7 @@ export default function SurveyProduct({ product, addquestion, deletequestion, de
       <Card className="rounded-2 border-info shadow-lg  h-100" style={{ backgroundColor: "#021278" }}>
         <Card.Header>
           <Stack direction="horizontal" gap={2}>
-            <span className="font-monospace text-white">{Principal.from(JSON.stringify(owner)).toString().slice(0, 25)}</span>
+            <span className="font-monospace text-white">{Principal.from(JSON.stringify(owner)).toString().slice(0, 17)}</span>
             {!loading ? (
               <>
                 <UpdateProduct product={product} updateproduct={updateproduct} />
