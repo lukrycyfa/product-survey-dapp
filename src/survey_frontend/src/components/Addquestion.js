@@ -191,6 +191,12 @@ export default function AddQuestion({ id, addquestion }) {
             </>
           )}
         </Modal.Footer>
+        <Modal.Footer>
+        <span className="text-white">
+          Provide a Question and options, evaluate options to get a class and
+          negative or positive point (max val 0.999999) before submitting.
+        </span>
+        </Modal.Footer>
       </Modal>
     </>
   );

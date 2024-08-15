@@ -149,6 +149,12 @@ export default function Product({ product, _loading }) {
                   Submit Survey
                 </Button>
               </Modal.Footer>
+              <Modal.Footer>
+              <span className="text-white">
+                After the evaluation of the last question 
+                the submit button will be available.
+              </span>
+              </Modal.Footer>
             </Modal>
           </Card.Text>
           <Modal show={_show} onHide={_handleClose} size="md" centered scrollable={true} backdrop={true} >

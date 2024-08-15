@@ -275,6 +275,7 @@ export default Server(() => {
         return res.status(400).json({ message: `Invalid Survey For Account ${owner.toText()}` });
     }
 
+
     const feedbackPayload = req.body.payload as VisitorsFeedBackPayload;
     var valid = false
     feedbackPayload.feedbacks.forEach((el) => {
@@ -289,6 +290,9 @@ export default Server(() => {
     const idx  = user.products.findIndex((pr) => pr.id === productId)
     if (idx < 0) {
       return res.status(400).json({ message: `Invalid Survey For Product with ${productId} or does not exist` });
+    }
+    if (owner.toText() == visitor.toText()) {
+      return res.status(400).json({ message: `This Survey Is Unauthorized For The Product Owner ${owner.toText()}` });
     }
 
     var uIdx = user.products[idx].survey.feedbacks.findIndex((vis) => vis.visitor.toText() ==  visitor.toText())
