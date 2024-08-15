@@ -61,12 +61,12 @@ podman info
 ```bash
 git clone https://github.com/lukrycyfa/product-survey-dapp.git
 ```
-- Create `.env` file on the project root and assign `REACT_APP_COHERE_AI_API_KEY` variable it's value at the top of the file
 
 - Cd into the dir and install it's dependencies
 ```bash 
 npm i
 ```
+- Create `.env` file on the project root and assign `REACT_APP_COHERE_AI_API_KEY` variable it's value at the top of the file
 
 - Start the internet Computer Replica
 ```bash
