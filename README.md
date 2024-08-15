@@ -34,7 +34,7 @@ Before using this code, it is recommended to consult with a qualified profession
 - This project was developed on a windows WSL2 Ubuntu 20.04 instance and would also do well on a Ubuntu 20.04 and later O.S.
 
 - If you don't already have an account, Sign-up with Cohere [@here](https://cohere.com)
-    - On your dashboard's `API key` section create an new or copy out existing Trial key, you will be needing it in the `.env` file you will be creating on the project root directory. Create this variable at the top of the file `REACT_APP_COHERE_AI_API_KEY` and assign the key as it's value.
+    - On your dashboard's `API key` section create a new or copy out existing Trial key, you will be needing it in the `.env` file you will be creating on the project root directory. Create this variable at the top of the file `REACT_APP_COHERE_AI_API_KEY` and assign the key as it's value.
 
 - Follow the instruction on downloading and installing [DFX here](https://internetcomputer.org/docs/current/developer-docs/setup/install#installing-the-ic-sdk-1) 
 
