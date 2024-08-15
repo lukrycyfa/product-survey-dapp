@@ -66,7 +66,7 @@ git clone https://github.com/lukrycyfa/product-survey-dapp.git
 ```bash 
 npm i
 ```
-- Create `.env` file on the project root and assign `REACT_APP_COHERE_AI_API_KEY` variable it's value at the top of the file
+- Create a `.env` file on the project root directory and assign `REACT_APP_COHERE_AI_API_KEY` variable it's value at the top of the file
 
 - Start the internet Computer Replica
 ```bash
